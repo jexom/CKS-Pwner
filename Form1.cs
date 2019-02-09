@@ -66,14 +66,23 @@ namespace Pwner
             task[19] = dumb[group[2]];
 
             Array.Copy(task, 0, allTasks, 200, 20);
-            task[12] = lr[1];
-            Array.Copy(task, 0, allTasks, 180, 20);
-            task[12] = lr[2];
-            Array.Copy(task, 0, allTasks, 160, 20);
-            task[12] = lr[3];
-            Array.Copy(task, 0, allTasks, 140, 20);
-            task[12] = lr[4];
-            Array.Copy(task, 0, allTasks, 120, 20);
+            if (radioButton2.Checked || radioButton3.Checked || radioButton4.Checked)
+            {
+                task[12] = lr[1];
+                Array.Copy(task, 0, allTasks, 180, 20);
+            }
+            if (radioButton3.Checked || radioButton4.Checked)
+            {
+                task[12] = lr[2];
+                Array.Copy(task, 0, allTasks, 160, 20);
+                task[12] = lr[3];
+                Array.Copy(task, 0, allTasks, 140, 20);
+            }
+            if (radioButton4.Checked)
+            {
+                task[12] = lr[4];
+                Array.Copy(task, 0, allTasks, 120, 20);
+            }
 
             int checksum = 0;
             for (int i = 0; i < 220; i++)
@@ -89,7 +98,7 @@ namespace Pwner
             byte[] cpChecksum = Encoding.Convert(utf8, win1251, utf16Bytes);
 
 
-            File.WriteAllBytes("./file.qrt", Properties.Resources.BaseFile);
+            File.WriteAllBytes("./CKS.QRT", Properties.Resources.BaseFile);
             FileStream fStream = File.OpenWrite("./CKS.QRT");
             fStream.Seek(0x73B5, SeekOrigin.Begin);
             fStream.Write(cpGroup, 0, 7);
