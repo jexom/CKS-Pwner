@@ -66,19 +66,21 @@ namespace Pwner
             task[19] = dumb[group[2]];
 
             Array.Copy(task, 0, allTasks, 200, 20);
-            if (radioButton2.Checked || radioButton3.Checked || radioButton4.Checked)
+            if (radioButton2.Checked || radioButton3.Checked || radioButton4.Checked || radioButton5.Checked)
             {
                 task[12] = lr[1];
                 Array.Copy(task, 0, allTasks, 180, 20);
             }
-            if (radioButton3.Checked || radioButton4.Checked)
+            if (radioButton3.Checked || radioButton4.Checked || radioButton5.Checked)
             {
                 task[12] = lr[2];
                 Array.Copy(task, 0, allTasks, 160, 20);
+            }
+            if (radioButton4.Checked || radioButton5.Checked) {
                 task[12] = lr[3];
                 Array.Copy(task, 0, allTasks, 140, 20);
             }
-            if (radioButton4.Checked)
+            if (radioButton5.Checked)
             {
                 task[12] = lr[4];
                 Array.Copy(task, 0, allTasks, 120, 20);
