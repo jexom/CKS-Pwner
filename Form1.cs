@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Compression;
 
 namespace Pwner
 {
@@ -55,10 +56,19 @@ namespace Pwner
 
         private void button2_Click(object sender, EventArgs e)
         {
-            for(int i = 1; i < 6; i++)
+            for(int i = 1; i < 5; i++)
             {
                 pwn(i);
             }
+
+            if(File.Exists("./" + textBox1.Text + ".zip"))
+            {
+                File.Delete("./" + textBox1.Text + ".zip");
+            }
+
+            ZipFile.CreateFromDirectory("./" + textBox1.Text, "./" + textBox1.Text + ".zip");
+            pwn(5);
+
             MessageBox.Show("Pwned!", "Pwned!", MessageBoxButtons.OK);
             Application.Exit();
         }
@@ -67,7 +77,6 @@ namespace Pwner
         {
             name = textBox1.Text.PadRight(14);
             group = maskedTextBox1.Text.PadRight(7);
-            string filename = name.Substring(0, name.IndexOf(' ')) + group.Split('-')[1];
 
             Encoding utf16 = Encoding.GetEncoding("UTF-16");
             Encoding win1251 = Encoding.GetEncoding("Windows-1251");
@@ -77,7 +86,6 @@ namespace Pwner
 
             utf16Bytes = utf16.GetBytes(group);
             byte[] cpGroup = Encoding.Convert(utf16, win1251, utf16Bytes);
-
 
             byte[] task = new byte[20];
             task[0] = dumb[name[4]];
@@ -105,27 +113,27 @@ namespace Pwner
             switch (labs)
             {
                 case 1:
-                    state = state != "" ? state : "(1)";
+                    state = state != "" ? state : "1-1 до 24.02";
                     task[12] = lr[0];
                     Array.Copy(task, 0, allTasks, 200, 20);
                     break;
                 case 2:
-                    state = state != "" ? state : "(1-2)";
+                    state = state != "" ? state : "1-2 до 24.03";
                     task[12] = lr[1];
                     Array.Copy(task, 0, allTasks, 180, 20);
                     goto case 1;
                 case 3:
-                    state = state != "" ? state : "(1-3)";
+                    state = state != "" ? state : "1-3 до 21.04";
                     task[12] = lr[2];
                     Array.Copy(task, 0, allTasks, 160, 20);
                     goto case 2;
                 case 4:
-                    state = state != "" ? state : "(1-4)";
+                    state = state != "" ? state : "1-4 до 19.05";
                     task[12] = lr[3];
                     Array.Copy(task, 0, allTasks, 140, 20);
                     goto case 3;
                 case 5:
-                    state = "(1-Зачет)";
+                    state = "1-Зачет";
                     task[12] = lr[4];
                     Array.Copy(task, 0, allTasks, 120, 20);
                     goto case 4;
@@ -145,8 +153,12 @@ namespace Pwner
             byte[] cpChecksum = Encoding.Convert(utf8, win1251, utf16Bytes);
 
 
-            File.WriteAllBytes("./" + filename + state + ".QRT", Properties.Resources.BaseFile);
-            FileStream fStream = File.OpenWrite("./" + filename + state + ".QRT");
+            name = name.Substring(0, name.IndexOf(' '));
+            string filename = name + group.Split('-')[1];
+            string dir = "./" + name + "/" + state + "/";
+            Directory.CreateDirectory(dir);
+            File.WriteAllBytes(dir + filename + ".QRT", Properties.Resources.BaseFile);
+            FileStream fStream = File.OpenWrite(dir + filename + ".QRT");
             fStream.Seek(0x73B5, SeekOrigin.Begin);
             fStream.Write(cpGroup, 0, 7);
             fStream.Seek(0x73BD, SeekOrigin.Begin);
