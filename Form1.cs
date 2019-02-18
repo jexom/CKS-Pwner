@@ -106,6 +106,7 @@ namespace Pwner
             {
                 case 1:
                     state = state != "" ? state : "(1)";
+                    task[12] = lr[0];
                     Array.Copy(task, 0, allTasks, 200, 20);
                     break;
                 case 2:
